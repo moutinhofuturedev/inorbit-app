@@ -63,12 +63,12 @@ export const PendingGoals = () => {
 							onClick={() => handleGoalCompletion(goal.id)}
 							key={goal.id}
 							disabled={isCompleted}
-							className='float-right'
+							className='flex items-center'
 						>
 							<Plus size={20} className='text-zinc-600' />
 							<div className='flex flex-col items-start'>
 								<span className='text-zinc-300 text-sm'>{goal.title}</span>
-								<span className='text-zinc-300 text-xs'>
+								<span className='text-zinc-600 text-xs'>
 									{remainingGoals(
 										goal.desiredWeeklyFrequency,
 										goal.completionCount,
