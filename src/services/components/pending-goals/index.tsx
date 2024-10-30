@@ -42,9 +42,9 @@ export const PendingGoals = () => {
 		await queryClient.invalidateQueries({ queryKey: ['pending-goals'] })
 	}
 
-	const remainingGoals = (frequency: number, completed: number) => {
-		if (frequency === completed) {
-			return 'meta semanal concluida'
+	const remainingGoals = (frequency: number, completed: number): string => {
+		if (completed >= frequency) {
+			return 'meta semanal concluída'
 		}
 
 		return `${frequency - completed} meta(s) para concluir`
