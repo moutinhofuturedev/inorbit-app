@@ -42,12 +42,12 @@ export const PendingGoals = () => {
 		await queryClient.invalidateQueries({ queryKey: ['pending-goals'] })
 	}
 
-	const remainingGoalsFn = (remaining: number) => {
-		if (remaining === 0) {
+	const remainingGoals = (frequency: number, completed: number) => {
+		if (frequency === completed) {
 			return 'meta semanal concluida'
 		}
 
-		return `${remaining} meta(s) para concluir`
+		return `${frequency - completed} meta(s) para concluir`
 	}
 
 	return (
@@ -58,9 +58,6 @@ export const PendingGoals = () => {
 				{pendingGoals.map(goal => {
 					const isCompleted =
 						goal.completionCount >= goal.desiredWeeklyFrequency
-					const remainingGoals =
-						goal.desiredWeeklyFrequency - goal.completionCount
-
 					return (
 						<OutlineButton
 							onClick={() => handleGoalCompletion(goal.id)}
@@ -72,7 +69,10 @@ export const PendingGoals = () => {
 							<div className='flex flex-col items-start'>
 								<span className='text-zinc-300 text-sm'>{goal.title}</span>
 								<span className='text-zinc-300 text-xs'>
-									{remainingGoalsFn(remainingGoals)}
+									{remainingGoals(
+										goal.desiredWeeklyFrequency,
+										goal.completionCount,
+									)}
 								</span>
 							</div>
 						</OutlineButton>
