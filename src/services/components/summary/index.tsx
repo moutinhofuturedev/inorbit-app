@@ -62,6 +62,8 @@ export const Summary = () => {
 			{/* section de metas */}
 			<PendingGoals />
 
+			<Separator />
+
 			{/* section de metas completadas */}
 			<section className='flex flex-col gap-6'>
 				<h2 className='text-zinc-100 text-xl'>Sua semana</h2>
