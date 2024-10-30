@@ -9,6 +9,10 @@ export const PendingGoals = () => {
 	const queryClient = useQueryClient()
 	const { data: pendingGoals } = usePendingGoals()
 
+	if (!pendingGoals) {
+		return null
+	}
+
 	const { mutateAsync: createGoalCompletionFn } = useMutation({
 		mutationFn: createGoalCompletion,
 
@@ -31,10 +35,6 @@ export const PendingGoals = () => {
 		},
 	})
 
-	if (!pendingGoals) {
-		return null
-	}
-
 	const handleGoalCompletion = async (goalId: string) => {
 		await createGoalCompletionFn(goalId)
 
@@ -42,21 +42,43 @@ export const PendingGoals = () => {
 		await queryClient.invalidateQueries({ queryKey: ['pending-goals'] })
 	}
 
+	const remainingGoalsFn = (remaining: number) => {
+		if (remaining === 0) {
+			return 'meta semanal concluida'
+		}
+
+		return `${remaining} meta(s) para concluir`
+	}
+
 	return (
-		<section className='flex flex-wrap gap-3'>
-			{pendingGoals.map(goal => {
-				const isCompleted = goal.completionCount >= goal.desiredWeeklyFrequency
-				return (
-					<OutlineButton
-						onClick={() => handleGoalCompletion(goal.id)}
-						key={goal.id}
-						disabled={isCompleted}
-					>
-						<Plus size={20} className='text-zinc-600' />
-						<span className='text-zinc-300 text-sm'>{goal.title}</span>
-					</OutlineButton>
-				)
-			})}
+		<section className='flex flex-col gap-3'>
+			<h2 className='text-zinc-100 text-xl'>Meta(s) pendente(s)</h2>
+
+			<div className='flex flex-wrap gap-3'>
+				{pendingGoals.map(goal => {
+					const isCompleted =
+						goal.completionCount >= goal.desiredWeeklyFrequency
+					const remainingGoals =
+						goal.desiredWeeklyFrequency - goal.completionCount
+
+					return (
+						<OutlineButton
+							onClick={() => handleGoalCompletion(goal.id)}
+							key={goal.id}
+							disabled={isCompleted}
+							className='float-right'
+						>
+							<Plus size={20} className='text-zinc-600' />
+							<div className='flex flex-col items-start'>
+								<span className='text-zinc-300 text-sm'>{goal.title}</span>
+								<span className='text-zinc-300 text-xs'>
+									{remainingGoalsFn(remainingGoals)}
+								</span>
+							</div>
+						</OutlineButton>
+					)
+				})}
+			</div>
 		</section>
 	)
 }
