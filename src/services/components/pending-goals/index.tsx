@@ -9,10 +9,6 @@ export const PendingGoals = () => {
 	const queryClient = useQueryClient()
 	const { data: pendingGoals } = usePendingGoals()
 
-	if (!pendingGoals) {
-		return null
-	}
-
 	const { mutateAsync: createGoalCompletionFn } = useMutation({
 		mutationFn: createGoalCompletion,
 
@@ -48,6 +44,10 @@ export const PendingGoals = () => {
 		}
 
 		return `${frequency - completed} meta(s) para concluir`
+	}
+
+	if (!pendingGoals) {
+		return null
 	}
 
 	return (

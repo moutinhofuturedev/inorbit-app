@@ -16,6 +16,7 @@ import { CheckCircle2, Plus } from 'lucide-react'
 
 export const Summary = () => {
 	const { data: summary } = useSummary()
+
 	if (!summary) {
 		return null
 	}
