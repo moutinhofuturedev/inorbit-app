@@ -51,7 +51,7 @@ export const PendingGoals = () => {
 	}
 
 	return (
-		<section className='flex flex-col gap-3'>
+		<section className='flex flex-col gap-6'>
 			<h2 className='text-zinc-100 text-xl'>Meta(s) pendente(s)</h2>
 
 			<div className='flex flex-wrap gap-3'>
